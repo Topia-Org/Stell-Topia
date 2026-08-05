@@ -20,4 +20,4 @@ This tool will handle:
 - Auditing user/lender actions before final approval.
 - Emulating approval/rejection workflows in isolation.
 
-_Note: For questions regarding future integration with the global Stellar-Mail application shell, refer to the follow-up integration issues in the main repository tracker._
+_Note: For questions regarding future integration with the global Stell-Topia application shell, refer to the follow-up integration issues in the main repository tracker._

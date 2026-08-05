@@ -1047,7 +1047,7 @@ fs.writeFileSync(
   "stealth-crypto-50-issue-drafts.json",
   JSON.stringify(
     {
-      repository: "Stellar-Mail/stealth",
+      repository: "Stell-Topia/stealth",
       workstream: "src/services/crypto",
       count: output.length,
       issues: output,
