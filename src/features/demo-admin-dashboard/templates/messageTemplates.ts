@@ -14,7 +14,7 @@ export const messageTemplates: MessageTemplate[] = [
     category: "welcome",
     description: "Friendly onboarding note for a brand-new demo account.",
     subject: "Welcome to Stealth — your private mailbox is ready",
-    body: "Hi there,\n\nYour Stealth mailbox is set up. You decide who can reach you: trusted contacts arrive instantly, everyone else follows the policy you choose.\n\nReply any time to start a conversation.\n\n— The Stealth demo team",
+    body: "Hi there,\n\nYour Stell-Topiabox is set up. You decide who can reach you: trusted contacts arrive instantly, everyone else follows the policy you choose.\n\nReply any time to start a conversation.\n\n— The Stealth demo team",
     recipients: ["new.user*stealth.demo"],
     tags: ["onboarding", "intro", "getting started"],
   },

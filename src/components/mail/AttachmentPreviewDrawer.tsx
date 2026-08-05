@@ -84,7 +84,7 @@ Animation Guidelines:
     encrypted_body:
       "U2VjcmV0IHBheWxvYWQgdGVzdCB2ZWN0b3IgZm9yIGRlYnVnZ2luZy4gVGhpcyBpcyBhIG1vY2sgY2lwaGVydGV4dCB0aGF0IGRvY3VtZW50cyBhIGNvcnJlY3RseSBmb3JtYXR0ZWQgU3RlbGxhciBtYWlsIGVudmVsb3BlLg==",
   },
-  "release-notes.txt": `Stealth Mail Client v1.2.0 Release Notes
+  "release-notes.txt": `Stell-Topia Client v1.2.0 Release Notes
 =======================================
 
 We are excited to release v1.2.0 of the Stealth cryptographic mail client.
@@ -101,7 +101,7 @@ Security Updates:
 - Standard bridge warnings are shown for legacy non-Stellar messages.`,
 
   "public-key.txt": `-----BEGIN STEALTH PUBLIC KEY BLOCK-----
-Version: Stealth Mail v1.2
+Version: Stell-Topia v1.2
 
 mQINBGNW0oIBEAC+w71tK6cI5Q5rU3+D/eCpx1RUpvWb2v1w04yE3D481w2m7w9E
 U2VjdXJlIGlkZW50aXR5IGZvciB1c2VyIGV2ZUBzdGVhbHRoLnh5ei4gUGxlYXNl

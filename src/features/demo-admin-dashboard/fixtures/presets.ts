@@ -64,7 +64,7 @@ export const PRESET_SCENARIOS: PresetScenario[] = [
         folder: "inbox",
         from: "Stealth Team",
         email: "welcome*stealth.demo",
-        body: "Hi there,\n\nYour Stealth mailbox is set up. You decide who can reach you: trusted contacts arrive instantly, everyone else follows the policy you choose.\n\nReply any time to start a conversation.\n\n— The Stealth demo team",
+        body: "Hi there,\n\nYour Stell-Topiabox is set up. You decide who can reach you: trusted contacts arrive instantly, everyone else follows the policy you choose.\n\nReply any time to start a conversation.\n\n— The Stealth demo team",
         time: "9:42 AM",
         unread: false,
         starred: true,

@@ -5,7 +5,7 @@ mailbox: the fixed bottom tab bar, the sidebar collapse behavior, the topbar
 action cluster, and the responsive switch that drives all three. It is scoped to
 the current app surface and intentionally does **not** describe a separate mobile
 app, a new navigation framework, or any tool folder. Keep changes aligned with
-the Stealth Mail positioning around safety, speed, and sender control.
+the Stell-Topia positioning around safety, speed, and sender control.
 
 Read this alongside [`README.md`](./README.md) (the mail list handoff), since the
 bottom bar and sidebar select folders that the list then renders.

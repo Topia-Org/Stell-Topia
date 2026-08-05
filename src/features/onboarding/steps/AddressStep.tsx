@@ -10,7 +10,7 @@ type Props = {
 /**
  * Step 3: Mailbox Address
  *
- * Displays the user's Stellar G-address as their Stealth mailbox identifier.
+ * Displays the user's Stellar G-address as their Stell-Topiabox identifier.
  * Provides a copy button so the address can be shared with contacts.
  */
 export function AddressStep({ walletAddress, onAdvance, onRetreat }: Props) {

@@ -1,4 +1,4 @@
-# Stealth Mail Tooling Ecosystem
+# Stell-Topia Tooling Ecosystem
 
 This directory contains isolated mini-product workspaces for OSS tooling contributors.
 

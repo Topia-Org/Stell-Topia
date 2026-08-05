@@ -3,7 +3,7 @@ import { API_ERROR_CODES, API_ERROR_REGISTRY } from "./errors";
 export const openApiDocument = {
   openapi: "3.1.0",
   info: {
-    title: "Stealth Mail API",
+    title: "Stell-Topia API",
     version: "1.0.0",
     description:
       "Development API for mailbox policy, Stellar postage proofs, and delivery receipts.",

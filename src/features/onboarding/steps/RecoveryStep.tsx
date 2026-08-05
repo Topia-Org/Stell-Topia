@@ -32,7 +32,7 @@ export function RecoveryStep({ onAdvance, onRetreat }: Props) {
       <div className="space-y-1">
         <h2 className="text-base font-semibold text-foreground">Secure your recovery</h2>
         <p className="text-sm text-muted-foreground">
-          Your wallet holds the only key to your Stealth mailbox. Anyone who obtains your seed
+          Your wallet holds the only key to your Stell-Topiabox. Anyone who obtains your seed
           phrase can impersonate you.
         </p>
       </div>

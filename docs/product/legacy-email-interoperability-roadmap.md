@@ -14,7 +14,7 @@ Stealth must not require a full network migration at once. The roadmap covers:
 
 ## Guiding principles
 
-- Native Stealth mail and bridged SMTP mail remain distinguishable.
+- Native Stell-Topia and bridged SMTP mail remain distinguishable.
 - Each phase documents capabilities, limitations, and failure modes.
 - Loops, spoofing, bounces, and unsubscribe behavior are explicitly addressed.
 - Milestones are gated by adoption and reliability.
@@ -25,7 +25,7 @@ Stealth must not require a full network migration at once. The roadmap covers:
 
 - Stealth Bridge accepts inbound SMTP for configured domains/aliases.
 - Incoming messages are verified with standard SMTP checks (SPF/DKIM/DMARC) when available.
-- The bridge delivers messages into Stealth mailboxes as `SMTP Bridged` items.
+- The bridge delivers messages into Stell-Topiaboxes as `SMTP Bridged` items.
 - The UI and metadata clearly label bridged mail as non-native and unsigned.
 
 ### Limitations
@@ -39,7 +39,7 @@ Stealth must not require a full network migration at once. The roadmap covers:
 
 - Bridged inbound mail is marked as `SMTP Bridged` in the provenance panel.
 - The subject preview or banner should surface the warning: `This message was bridged from SMTP and cannot be fully verified.`
-- Native Stealth mail retains a separate `Cryptographically Verified` status.
+- Native Stell-Topia retains a separate `Cryptographically Verified` status.
 
 ### Loops and forwarding
 
@@ -52,7 +52,7 @@ Stealth must not require a full network migration at once. The roadmap covers:
 - SPF/DKIM/DMARC verification is required where possible to reduce spoofing risk.
 - Messages failing verification may still be delivered with a higher-risk banner and lower trust label.
 - Bounce handling follows SMTP semantics: the bridge returns delivery failure notices to the original SMTP sender using the standard return-path.
-- Stealth must not generate bounce loops for bridged messages. A bounced bridged message should be handled by the originating SMTP server, not by the Stealth mailbox.
+- Stealth must not generate bounce loops for bridged messages. A bounced bridged message should be handled by the originating SMTP server, not by the Stell-Topiabox.
 
 ### Unsubscribe
 
@@ -135,13 +135,13 @@ Stealth must not require a full network migration at once. The roadmap covers:
 ### Capabilities
 
 - Domain owners publish Stealth-specific DNS records to verify ownership and enable native Stealth routing.
-- Verified domains can receive native Stealth mail without SMTP bridging when both sender and recipient are Stealth-capable.
+- Verified domains can receive native Stell-Topia without SMTP bridging when both sender and recipient are Stealth-capable.
 - Native upgrade paths let domains gradually move from SMTP bridging to Stealth-native delivery.
 
 ### Limitations
 
 - Domain verification requires DNS changes and cannot be assumed for all domains immediately.
-- A domain may safely support both native Stealth mail and SMTP-bridged mail simultaneously.
+- A domain may safely support both native Stell-Topia and SMTP-bridged mail simultaneously.
 - Native and bridged deliveries remain distinguishable to prevent users from assuming equal trust.
 
 ### Distinguishability
@@ -153,7 +153,7 @@ Stealth must not require a full network migration at once. The roadmap covers:
 
 - Native Stealth routing must enforce domain verification records and on-chain signatures before treating mail as native.
 - If a message arrives through SMTP for a verified domain, the bridge should compare the path to native delivery and retain the bridged label unless fully native proof is present.
-- Spoofing defenses rely on the same strong identity checks used by all native Stealth mail.
+- Spoofing defenses rely on the same strong identity checks used by all native Stell-Topia.
 
 ### Milestone
 
@@ -176,4 +176,4 @@ Each milestone must satisfy both:
 
 ## Success signal
 
-A design partner adopts one Stealth workflow while safely communicating with ordinary email users, with bridged mail clearly distinguished and native proofs retained for verified Stealth mail.
+A design partner adopts one Stealth workflow while safely communicating with ordinary email users, with bridged mail clearly distinguished and native proofs retained for verified Stell-Topia.

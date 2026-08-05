@@ -17,7 +17,7 @@ export function LandingScreen({ onConnectWallet, onExploreDemo }: LandingScreenP
             <Mail className="w-10 h-10 text-primary" />
           </div>
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground">
-            Stealth Mail
+            Stell-Topia
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
             A cryptographic mail client built on Stellar. Send messages with mathematical certainty.

@@ -66,7 +66,7 @@ read payment state, inspect private keys, or infer sender identity on their own.
   relay, message, or payment is verified before the relevant feature data says so.
 - Keep motion and feedback respectful of `prefers-reduced-motion`; do not make warnings or errors
   harder to read through animation.
-- Keep shared copy aligned with Stealth Mail's safety, speed, and sender-control positioning.
+- Keep shared copy aligned with Stell-Topia's safety, speed, and sender-control positioning.
 - Do not introduce a new V1/V2 tool folder or standalone product surface from this module.
 - Prefer linking to existing files in this folder, `src/components/ui`, or `src/styles.css` instead
   of documenting architecture that is not implemented.
