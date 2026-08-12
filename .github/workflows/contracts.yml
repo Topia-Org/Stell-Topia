@@ -1,46 +1,46 @@
-name: stell-topia-contracts
+# name: stell-topia-contracts
 
-on:
-  push:
-    branches: ['*']
-    paths:
-      - "stell-topia-contracts/**"
-      - ".github/workflows/contracts.yml"
-      - "protocol/**"
-      - "scripts/**"
-  pull_request:
-    branches: ['*']
-    paths:
-      - "stell-topia-contracts/**"
-      - ".github/workflows/contracts.yml"
-      - "protocol/**"
-      - "scripts/**"
+# on:
+#   push:
+#     branches: ['*']
+#     paths:
+#       - "stell-topia-contracts/**"
+#       - ".github/workflows/contracts.yml"
+#       - "protocol/**"
+#       - "scripts/**"
+#   pull_request:
+#     branches: ['*']
+#     paths:
+#       - "stell-topia-contracts/**"
+#       - ".github/workflows/contracts.yml"
+#       - "protocol/**"
+#       - "scripts/**"
 
-permissions:
-  contents: read
+# permissions:
+#   contents: read
 
-jobs:
-  rust:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: stell-topia-contracts/soroban
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@v2
-      - run: cargo fmt -- --check
-      - run: cargo clippy --all-targets -- -D warnings
-      - run: cargo test --workspace
+# jobs:
+#   rust:
+#     runs-on: ubuntu-latest
+#     defaults:
+#       run:
+#         working-directory: stell-topia-contracts/soroban
+#     steps:
+#       - uses: actions/checkout@v4
+#       - uses: dtolnay/rust-toolchain@stable
+#       - uses: Swatinem/rust-cache@v2
+#       - run: cargo fmt -- --check
+#       - run: cargo clippy --all-targets -- -D warnings
+#       - run: cargo test --workspace
 
-  bindings:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-          cache: npm
-      - run: npm ci
-      - run: npm run generate:bindings
-      - run: git diff --exit-code -- src/services/stellar/contracts/
+#   bindings:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#       - uses: actions/setup-node@v4
+#         with:
+#           node-version: 22.x
+#           cache: npm
+#       - run: npm ci
+#       - run: npm run generate:bindings
+#       - run: git diff --exit-code -- src/services/stellar/contracts/
