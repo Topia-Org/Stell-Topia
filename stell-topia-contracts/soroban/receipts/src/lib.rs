@@ -88,6 +88,7 @@ mod lifecycle_guard {
     }
 
     #[contractclient(name = "LifecycleContractClient")]
+    #[allow(dead_code)] // trait exists only to generate LifecycleContractClient
     pub trait LifecycleContractInterface {
         fn verify_delivered(
             message_id: BytesN<32>,

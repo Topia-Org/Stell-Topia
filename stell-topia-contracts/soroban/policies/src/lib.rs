@@ -139,6 +139,10 @@ impl PoliciesContract {
         Self::set_policy_as(env, owner.clone(), owner, policy)
     }
 
+    // Emits events via the deprecated `events().publish` to preserve the exact
+    // tuple-encoded wire format pinned by the `event_schema` tests; migrating to
+    // `#[contractevent]` would change the data encoding (ScVec -> ScMap).
+    #[allow(deprecated)]
     pub fn set_policy_as(
         env: Env,
         owner: Address,
@@ -186,6 +190,7 @@ impl PoliciesContract {
     /// Event topics are `("delegate", owner, delegate)` and data is the
     /// requested `DelegateScope`. Both scope flags being false represents
     /// revocation. Delegate changes do not increment the policy version.
+    #[allow(deprecated)] // preserve pinned event wire format; see set_policy_as
     pub fn set_delegate(
         env: Env,
         owner: Address,

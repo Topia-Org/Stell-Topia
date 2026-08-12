@@ -197,6 +197,7 @@ impl LifecycleContract {
             .ok_or(Error::NotInitialized)
     }
 
+    #[allow(clippy::too_many_arguments)]
     pub fn bind(
         env: Env,
         message_id: BytesN<32>,
@@ -554,10 +555,11 @@ mod test {
 
     use super::*;
     use soroban_sdk::{
-        testutils::{Address as _, Events, Ledger, MockAuth, MockAuthInvoke},
+        testutils::{Address as _, Events, Ledger},
         xdr::{ContractEventBody, ScSymbol, ScVal},
-        Event as _, TryFromVal, Val, Vec as SorobanVec,
+        TryFromVal, Val, Vec as SorobanVec,
     };
+    use std::string::ToString;
     use stealth_policies::{MailboxPolicy, PoliciesContract, PoliciesContractClient};
 
     fn hash(env: &Env, byte: u8) -> BytesN<32> {
@@ -568,7 +570,7 @@ mod test {
         let policies = env.register(PoliciesContract, ());
         let policies_client = PoliciesContractClient::new(env, &policies);
         policies_client.set_policy(
-            &owner,
+            owner,
             &MailboxPolicy {
                 allow_unknown: true,
                 require_verified: false,
@@ -585,10 +587,11 @@ mod test {
         env.ledger().set_timestamp(42);
         env.ledger().set_sequence_number(10);
 
-        let admin = Address::generate(&env);
         let owner = Address::generate(&env);
         let sender = Address::generate(&env);
-        let recipient = Address::generate(&env);
+        // `bind` requires the mailbox owner to be the recipient (see the
+        // `owner != recipient` guard), so valid test data must share the address.
+        let recipient = owner.clone();
 
         let policies = configure_policies(&env, &owner);
         let postage = Address::generate(&env);
@@ -640,8 +643,8 @@ mod test {
         assert_eq!(record.sender, sender);
         assert_eq!(record.recipient, recipient);
         assert_eq!(record.amount, 100);
-        assert_eq!(record.verified, true);
-        assert_eq!(record.receipt_required, false);
+        assert!(record.verified);
+        assert!(!record.receipt_required);
         assert_eq!(record.terminal, LifecycleTerminal::Open);
         assert_eq!(record.bound_at, 42);
     }
@@ -663,14 +666,22 @@ mod test {
         );
 
         let events = env.events().all().filter_by_contract(&contract_id);
-        assert_eq!(events.len(), 1);
+        assert_eq!(events.events().len(), 1);
         let body = &events.events()[0].body;
-        let ContractEventBody::V0(v0) = body else {
-            std::panic!("expected V0 event body");
-        };
+        let ContractEventBody::V0(v0) = body;
         assert_eq!(v0.topics.len(), 3);
-        assert_eq!(v0.topics[0], ScVal::Symbol(ScSymbol(symbol_short!("bind").into_val(&env).into())));
-        assert_eq!(v0.topics[1], ScVal::Bytes(message_id.to_array().to_vec().try_into().unwrap()));
+        assert_eq!(
+            v0.topics[0],
+            ScVal::Symbol(ScSymbol("lifecycle".try_into().unwrap()))
+        );
+        assert_eq!(
+            v0.topics[1],
+            ScVal::Symbol(ScSymbol("bind".try_into().unwrap()))
+        );
+        assert_eq!(
+            v0.topics[2],
+            ScVal::Bytes(message_id.to_array().to_vec().try_into().unwrap())
+        );
     }
 
     #[test]
@@ -838,14 +849,21 @@ mod test {
 
         let events = env.events().all().filter_by_contract(&contract_id);
         let body = &events.events()[0].body;
-        let ContractEventBody::V0(v0) = body else {
-            std::panic!("expected V0 event body");
-        };
+        let ContractEventBody::V0(v0) = body;
 
         assert_eq!(v0.topics.len(), 3);
-        assert_eq!(v0.topics[0], ScVal::Symbol(ScSymbol(symbol_short!("lifecycle").into_val(&env).into())));
-        assert_eq!(v0.topics[1], ScVal::Symbol(ScSymbol(symbol_short!("bind").into_val(&env).into())));
-        assert_eq!(v0.topics[2], ScVal::Bytes(message_id.to_array().to_vec().try_into().unwrap()));
+        assert_eq!(
+            v0.topics[0],
+            ScVal::Symbol(ScSymbol("lifecycle".try_into().unwrap()))
+        );
+        assert_eq!(
+            v0.topics[1],
+            ScVal::Symbol(ScSymbol("bind".try_into().unwrap()))
+        );
+        assert_eq!(
+            v0.topics[2],
+            ScVal::Bytes(message_id.to_array().to_vec().try_into().unwrap())
+        );
     }
 
     #[test]

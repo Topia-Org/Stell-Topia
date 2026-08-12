@@ -156,6 +156,7 @@ mod lifecycle_guard {
     }
 
     #[contractclient(name = "LifecycleContractClient")]
+    #[allow(dead_code)] // trait exists only to generate LifecycleContractClient
     pub trait LifecycleContractInterface {
         fn verify_settle(
             message_id: BytesN<32>,
@@ -513,7 +514,7 @@ impl PostageContract {
 
         token::TokenClient::new(&env, &config.asset).transfer(
             &sender,
-            &MuxedAddress::from(env.current_contract_address()),
+            MuxedAddress::from(env.current_contract_address()),
             &amount,
         );
 
@@ -735,7 +736,7 @@ impl PostageContract {
         let config = Self::read_config(&env)?;
         token::TokenClient::new(&env, &config.asset).transfer(
             &env.current_contract_address(),
-            &MuxedAddress::from(postage.sender.clone()),
+            MuxedAddress::from(postage.sender.clone()),
             &postage.amount,
         );
 
@@ -785,18 +786,18 @@ impl PostageContract {
                 if recipient_amount > 0 {
                     token.transfer(
                         &escrow,
-                        &MuxedAddress::from(postage.recipient.clone()),
+                        MuxedAddress::from(postage.recipient.clone()),
                         &recipient_amount,
                     );
                 }
                 if postage.fee > 0 {
-                    token.transfer(&escrow, &MuxedAddress::from(config.treasury), &postage.fee);
+                    token.transfer(&escrow, MuxedAddress::from(config.treasury), &postage.fee);
                 }
             }
             PostageStatus::Refunded => {
                 token.transfer(
                     &escrow,
-                    &MuxedAddress::from(postage.sender.clone()),
+                    MuxedAddress::from(postage.sender.clone()),
                     &postage.amount,
                 );
             }
@@ -966,6 +967,7 @@ mod test {
         );
     }
 
+    #[allow(dead_code)] // test fixture; not every test reads every field
     struct Setup {
         env: Env,
         contract_id: Address,
@@ -2739,7 +2741,6 @@ mod auth_boundaries {
 
     use super::*;
     use soroban_sdk::{
-        symbol_short,
         testutils::{Address as _, AuthorizedFunction, AuthorizedInvocation, Ledger},
         token, Address, BytesN, Env, IntoVal, Symbol,
     };
@@ -2750,6 +2751,7 @@ mod auth_boundaries {
         BytesN::from_array(env, &[byte; 32])
     }
 
+    #[allow(dead_code)] // test fixture; not every test reads every field
     struct Setup {
         env: Env,
         contract_id: Address,
