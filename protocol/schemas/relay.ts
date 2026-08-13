@@ -8,7 +8,4 @@ export const RelayRequestSchema = z.object({
   sender: z.string(),
 });
 
-
-
-
 export type RelayRequest = z.infer<typeof RelayRequestSchema>;

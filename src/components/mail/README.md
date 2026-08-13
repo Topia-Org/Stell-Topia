@@ -103,3 +103,6 @@ assets unless a privacy review covers caching, tracking, and fallback behavior.
 - Run targeted tests around `src/components/mail/trust-state.test.ts` when
   changing trust or verification display, then run the project typecheck and
   lint commands when the local environment supports them.
+
+
+

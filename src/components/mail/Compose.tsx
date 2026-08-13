@@ -797,3 +797,7 @@ function getSuccessToastMessage(scheduled: boolean, trusted: boolean, postage: s
   if (trusted) return "Encrypted message sent (trusted — no postage required)";
   return `Encrypted message sent with ${postage} XLM postage`;
 }
+
+
+
+

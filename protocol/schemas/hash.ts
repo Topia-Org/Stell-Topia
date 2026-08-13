@@ -10,8 +10,4 @@ export const hash32Schema = z
     message: "Expected a 32-byte lowercase hexadecimal hash",
   });
 
-
-
-  
-
 export type Hash32 = z.infer<typeof hash32Schema>;

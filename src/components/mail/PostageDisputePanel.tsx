@@ -214,3 +214,7 @@ export function PostageDisputePanel({ postageStatus, amountXlm }: PostageDispute
     </div>
   );
 }
+
+
+
+

@@ -39,3 +39,7 @@ export function getTrustStates(email: Email): TrustState[] {
 export function getPrimaryTrustState(email: Email): TrustState {
   return getTrustStates(email)[0];
 }
+
+
+
+
