@@ -10,3 +10,6 @@ import { HttpModule } from '@nestjs/axios';
   exports: [FaresService],
 })
 export class FaresModule {}
+
+
+

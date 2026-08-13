@@ -19,3 +19,6 @@ export class SearchFlightDto {
   @Max(9)
   passengers: number;
 }
+
+
+

@@ -1,7 +1,7 @@
 #![no_std]
 
 use soroban_sdk::{
-    contract, contractevent, contracterror, contractimpl, contracttype, symbol_short, Address, Env,
+    contract, contracterror, contractimpl, contracttype, symbol_short, Address, Env,
 };
 
 #[contract]
@@ -58,46 +58,6 @@ pub struct PolicyDecision {
     pub reason: PolicyReason,
     pub required_postage: i128,
     pub rule: SenderRule,
-    pub version: u32,
-}
-
-#[contractevent(topics = ["policy"])]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct PolicyEvent {
-    #[topic]
-    pub owner: Address,
-    pub policy: VersionedMailboxPolicy,
-}
-
-#[contractevent(topics = ["delegate"])]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct DelegateEvent {
-    #[topic]
-    pub owner: Address,
-    #[topic]
-    pub delegate: Address,
-    pub scope: DelegateScope,
-}
-
-#[contractevent(topics = ["sender"])]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct SenderEvent {
-    #[topic]
-    pub owner: Address,
-    #[topic]
-    pub sender: Address,
-    pub rule: SenderRule,
-    pub version: u32,
-}
-
-#[contractevent(topics = ["tier"])]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct TierEvent {
-    #[topic]
-    pub owner: Address,
-    #[topic]
-    pub sender: Address,
-    pub minimum_postage: i128,
     pub version: u32,
 }
 
@@ -233,6 +193,7 @@ impl PoliciesContract {
         Self::set_sender_rule_as(env, owner.clone(), owner, sender, rule)
     }
 
+    #[allow(deprecated)] // preserve pinned event wire format; see set_policy_as
     pub fn set_sender_rule_as(
         env: Env,
         owner: Address,
@@ -270,6 +231,7 @@ impl PoliciesContract {
         Self::set_sender_tier_as(env, owner.clone(), owner, sender, minimum_postage)
     }
 
+    #[allow(deprecated)] // preserve pinned event wire format; see set_policy_as
     pub fn set_sender_tier_as(
         env: Env,
         owner: Address,
@@ -666,9 +628,9 @@ mod vectors {
             let expected = c["expected"]["valid"].as_bool().unwrap();
             let got = validate_hash32(input);
             assert_eq!(got.is_ok(), expected, "vectors: {}", id);
-            if got.is_ok() {
+            if let Ok(normalized) = got {
                 if let Some(exp_norm) = c["expected"]["normalized"].as_str() {
-                    assert_eq!(got.unwrap(), exp_norm, "vectors: {} normalised", id);
+                    assert_eq!(normalized, exp_norm, "vectors: {} normalised", id);
                 }
             }
         }
@@ -1163,14 +1125,12 @@ mod proptests {
             } else if require_receipt && !receipt {
                 prop_assert!(!decision.allowed);
                 prop_assert_eq!(decision.reason, PolicyReason::ReceiptRequired);
+            } else if postage >= tier_postage {
+                prop_assert!(decision.allowed);
+                prop_assert_eq!(decision.reason, PolicyReason::TierSatisfied);
             } else {
-                if postage >= tier_postage {
-                    prop_assert!(decision.allowed);
-                    prop_assert_eq!(decision.reason, PolicyReason::TierSatisfied);
-                } else {
-                    prop_assert!(!decision.allowed);
-                    prop_assert_eq!(decision.reason, PolicyReason::InsufficientPostage);
-                }
+                prop_assert!(!decision.allowed);
+                prop_assert_eq!(decision.reason, PolicyReason::InsufficientPostage);
             }
         }
     }
@@ -1213,7 +1173,7 @@ mod auth_boundaries {
         assert!(client.try_set_policy(&owner, &permissive_policy()).is_err());
 
         // Nothing was written: defaults still apply and the version is unbumped.
-        assert_eq!(client.get_policy(&owner).allow_unknown, false);
+        assert!(!client.get_policy(&owner).allow_unknown);
         assert_eq!(client.policy_version(&owner), 0);
     }
 

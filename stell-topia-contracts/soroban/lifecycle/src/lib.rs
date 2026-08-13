@@ -1,8 +1,8 @@
 #![no_std]
 
 use soroban_sdk::{
-    contract, contracterror, contractevent, contractimpl, contracttype,
-    symbol_short, Address, BytesN, Env, Symbol,
+    contract, contracterror, contractevent, contractimpl, contracttype, symbol_short, Address,
+    BytesN, Env, Symbol,
 };
 use stealth_policies::{PoliciesContractClient, PolicyDecision, PolicyReason};
 
@@ -24,34 +24,17 @@ pub trait LifecycleContractInterface {
         verified: bool,
         receipt_required: bool,
     ) -> Result<LifecycleRecord, Error>;
-    fn verify_settle(
-        message_id: BytesN<32>,
-        postage: Postage,
-    ) -> Result<LifecycleRecord, Error>;
-    fn verify_refund(
-        message_id: BytesN<32>,
-        postage: Postage,
-    ) -> Result<LifecycleRecord, Error>;
-    fn verify_dispute(
-        message_id: BytesN<32>,
-        postage: Postage,
-    ) -> Result<LifecycleRecord, Error>;
-    fn verify_expire(
-        message_id: BytesN<32>,
-        postage: Postage,
-    ) -> Result<LifecycleRecord, Error>;
-    fn verify_reclaim(
-        message_id: BytesN<32>,
-        postage: Postage,
-    ) -> Result<LifecycleRecord, Error>;
+    fn verify_settle(message_id: BytesN<32>, postage: Postage) -> Result<LifecycleRecord, Error>;
+    fn verify_refund(message_id: BytesN<32>, postage: Postage) -> Result<LifecycleRecord, Error>;
+    fn verify_dispute(message_id: BytesN<32>, postage: Postage) -> Result<LifecycleRecord, Error>;
+    fn verify_expire(message_id: BytesN<32>, postage: Postage) -> Result<LifecycleRecord, Error>;
+    fn verify_reclaim(message_id: BytesN<32>, postage: Postage) -> Result<LifecycleRecord, Error>;
     fn verify_delivered(
         message_id: BytesN<32>,
         receipt: ReceiptState,
     ) -> Result<LifecycleRecord, Error>;
-    fn verify_read(
-        message_id: BytesN<32>,
-        receipt: ReceiptState,
-    ) -> Result<LifecycleRecord, Error>;
+    fn verify_read(message_id: BytesN<32>, receipt: ReceiptState)
+        -> Result<LifecycleRecord, Error>;
     fn get(message_id: BytesN<32>) -> Result<LifecycleRecord, Error>;
 }
 
@@ -333,7 +316,9 @@ impl LifecycleContract {
         record.protocol_version = Some(receipt.protocol_version);
         record.terminal = LifecycleTerminal::Delivered;
 
-        env.storage().persistent().set(&DataKey::Record(message_id.clone()), &record);
+        env.storage()
+            .persistent()
+            .set(&DataKey::Record(message_id.clone()), &record);
         Self::publish_event(&env, symbol_short!("delivered"), message_id, record.clone());
         Ok(record)
     }
@@ -364,7 +349,9 @@ impl LifecycleContract {
         record.read_at = Some(env.ledger().timestamp());
         record.terminal = LifecycleTerminal::Read;
 
-        env.storage().persistent().set(&DataKey::Record(message_id.clone()), &record);
+        env.storage()
+            .persistent()
+            .set(&DataKey::Record(message_id.clone()), &record);
         Self::publish_event(&env, symbol_short!("read"), message_id, record.clone());
         Ok(record)
     }
@@ -393,8 +380,15 @@ impl LifecycleContract {
         }
 
         record.terminal = terminal;
-        env.storage().persistent().set(&DataKey::Record(message_id.clone()), &record);
-        Self::publish_event(&env, Self::terminal_symbol(terminal), message_id, record.clone());
+        env.storage()
+            .persistent()
+            .set(&DataKey::Record(message_id.clone()), &record);
+        Self::publish_event(
+            &env,
+            Self::terminal_symbol(terminal),
+            message_id,
+            record.clone(),
+        );
         Ok(record)
     }
 
@@ -430,7 +424,9 @@ impl LifecycleContract {
                     | LifecycleTerminal::Expired
                     | LifecycleTerminal::Disputed
             ),
-            LifecycleTerminal::Open | LifecycleTerminal::Delivered | LifecycleTerminal::Read => false,
+            LifecycleTerminal::Open | LifecycleTerminal::Delivered | LifecycleTerminal::Read => {
+                false
+            }
         }
     }
 
@@ -521,12 +517,7 @@ impl LifecycleContract {
         Ok(())
     }
 
-    fn publish_event(
-        env: &Env,
-        action: Symbol,
-        message_id: BytesN<32>,
-        record: LifecycleRecord,
-    ) {
+    fn publish_event(env: &Env, action: Symbol, message_id: BytesN<32>, record: LifecycleRecord) {
         LifecycleEvent {
             action,
             message_id,
@@ -796,17 +787,18 @@ mod test {
             &false,
         );
         assert_eq!(
-            client.try_bind(
-                &message_id,
-                &owner,
-                &sender,
-                &recipient,
-                &100,
-                &true,
-                &false
-            )
-            .unwrap_err()
-            .unwrap(),
+            client
+                .try_bind(
+                    &message_id,
+                    &owner,
+                    &sender,
+                    &recipient,
+                    &100,
+                    &true,
+                    &false
+                )
+                .unwrap_err()
+                .unwrap(),
             Error::DuplicateLifecycle
         );
     }
@@ -878,8 +870,10 @@ mod test {
         let config_vec: SorobanVec<Val> = SorobanVec::try_from_val(&env, &config_val).unwrap();
         let record_vec: SorobanVec<Val> = SorobanVec::try_from_val(&env, &record_val).unwrap();
 
-        let config_symbol: Symbol = Symbol::try_from_val(&env, &config_vec.get(0).unwrap()).unwrap();
-        let record_symbol: Symbol = Symbol::try_from_val(&env, &record_vec.get(0).unwrap()).unwrap();
+        let config_symbol: Symbol =
+            Symbol::try_from_val(&env, &config_vec.get(0).unwrap()).unwrap();
+        let record_symbol: Symbol =
+            Symbol::try_from_val(&env, &record_vec.get(0).unwrap()).unwrap();
 
         assert_eq!(config_symbol.to_string(), "Config");
         assert_eq!(record_symbol.to_string(), "Record");

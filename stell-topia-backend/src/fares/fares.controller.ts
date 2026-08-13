@@ -12,3 +12,7 @@ export class FaresController {
     return this.faresService.search(query);
   }
 }
+
+
+
+

@@ -6,6 +6,9 @@ interface LandingScreenProps {
   onExploreDemo: () => void;
 }
 
+
+
+
 export function LandingScreen({ onConnectWallet, onExploreDemo }: LandingScreenProps) {
   return (
     <div className="relative min-h-screen text-foreground flex flex-col items-center justify-center p-6 overflow-hidden">

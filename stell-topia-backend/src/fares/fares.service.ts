@@ -20,3 +20,7 @@ export class FaresService {
     return response.data as any;
   }
 }
+
+
+
+
