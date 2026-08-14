@@ -21,3 +21,7 @@ export class CreateBookingDto {
   @Min(1)
   passengers: number;
 }
+
+
+
+

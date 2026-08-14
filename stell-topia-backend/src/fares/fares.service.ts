@@ -22,5 +22,14 @@ export class FaresService {
 }
 
 
+async function searchFlights(query: Record<string, any>) {
+  const faresService = new FaresService(new HttpService());
+  return await faresService.search(query);
+}
+
+
+
+
+
 
 
